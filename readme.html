@@ -1,0 +1,131 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Selectable Countries</title>
+
+<style type="text/css">
+<!--
+a, a:active, a:visited {
+  color: #006666;
+  text-decoration: none
+}
+a:hover {
+    color:#00CC99;
+    text-decoration: underline;
+}
+BODY, P, H1, H2, H3, H4, H5, H6, LI, TD, DD, DT, table {
+  font-family: Verdana, AvantGarde, Tahoma, Arial, sans-serif;
+  font-size: 10pt;
+  color: black;
+  padding: 0px;
+  margin: 20px;
+}
+H1, H2, H3, H4 {
+  font-weight: bold
+}
+h1 {
+  font-size: 20px;
+}
+h2 { font-size: 16px;  border-top: 1px solid #404040; padding-top: 3px; }
+
+code {
+  padding-left: 25px;
+}
+code.nopad { padding-left: 0; }
+td, th { padding: 3px; }
+td+td, th+th { padding-left: 20px; }
+th { text-align: left; }
+ol li {
+  margin-left: 0;
+}
+.corefile {
+  color: red;
+}
+.removed {
+  text-decoration: line-through;
+}
+-->
+</style>
+</head>
+
+<body>
+<a name="top" id="top"></a>
+<h1>Selectable Countries for Zen Cart</h1>
+<h3>Version 1.1.0 by batracy and lat9</h3>
+<p>Current Support Thread at Zen Cart Forums: <a href="http://www.zen-cart.com/showthread.php?197534-Selectable-Countries-Support-Thread">http://www.zen-cart.com/showthread.php?197534-Selectable-Countries-Support-Thread</a></p>
+<p><strong>Note:</strong> This plugin supports Zen Cart v1.5.0 and v1.5.1 <strong>only</strong>.  The behavior provided by this plugin is <em>built into</em> Zen Cart versions 1.5.2 and later.  If you have installed this plugin and are preparing to upgrade to Zen Cart v1.5.2 and later, refer <a href="#v152">here</a> for instructions.</p>
+
+<h2>Version History:</h2>
+<ul>
+  <li>v1.0.0, 2012-06-22, Initial release, based on batracy's posts to <a href="http://www.zen-cart.com/showthread.php?195527-Ship-to-only-two-countries/page2">http://www.zen-cart.com/showthread.php?195527-Ship-to-only-two-countries/page2</a>.</li>
+  <li>v1.0.1, 2012-06-22, Add the license.txt file.</li>
+  <li>v1.1.0, 2013-12-08, Include upgrade instructions for Zen Cart v1.5.2.</li>
+</ul>
+
+<h2>What it does</h2>
+<p>You've got a store and you only want to ship to four countries &hellip; today.  This plugin allows you to enable or disable individual countries in your database so that if you decide tomorrow that you now want to ship to seven countries, it's a simple matter of clicking a couple of buttons in your admin area to enable the next three.</p>
+<p>The updated display of your admin's <em>Location/Taxes-&gt;Countries</em> looks like the image below.  Countries that are <em>Active</em> show a green-dot and those that are <em>Inactive</em> show a red-dot.  You can change a country's <em>Active</em> status by either clicking on the dot to toggle between active and inactive or via checkbox input if you choose to <em>Edit</em> that country's settings.</p>
+<img src="screenshot.jpg" title="Sample output" alt="Sample output" />
+<p>When a country is <em>Inactive</em>, that country cannot be used in <em>any</em> customer address &mdash; neither the billing nor shipping address can reside in that country.  If an existing customer has an address-book entry in a country that is now inactive, that customer will be redirected to the address_book_process page upon login.  From that page, they can either change the no-longer-supported address to have an active country, delete the no-longer-supported address or logoff.  The screen-shot below shows how this is presented to the customer:</p>
+<img src="error_screen.jpg" title="Error output" alt="Error output" />
+<h3>Known Limitations</h3>
+<p>If your store uses PayPal&reg; Express Checkout, it is possible that the customer's account with PayPal is in a country that is inactive in your store.  You might be able to configure your PayPal account to limit the countries from which you accept payments and/or ship to.</p>
+
+<h2>Installation</h2>
+<p>There are <span class="corefile">core-file overwrites</span> in this plugin; you should <strong>always</strong> backup your cart&rsquo;s database and files prior to making any changes.</p>
+<ol>
+<li>Go to your admin's Tools-&gt;Install SQL Patches; from there you can either upload the install_selectable_countries.sql file or copy and paste the contents of the file.  The contents of the SQL file <strong>assume</strong> that the DB_PREFIX value in your configure.php files is set to blank ('').  If that's not the case, you'll need to edit the .sql file to add your database prefix to the <em>countries</em> table's name.  For example, if your DB_PREFIX value is 'zen_', then you would add zen_ to the name of the countries' table (i.e. zen_countries) before running the SQL script.</li>
+<li>Make a backup copy of the <span class="corefile">overwritten core files</span>, then copy the plugin's files to your cart, after renaming the &quot;YOUR_TEMPLATE&quot; folder to match your custom template's name and the &quot;YOUR_ADMIN&quot; folder to match your your renamed admin folder's name:
+<ol>
+<li>/includes/auto_loaders/config.country_check.php</li>
+<li>/includes/init_includes/init_country_check.php</li>
+<li class="corefile">/includes/functions/functions_lookups.php</li>
+<li>/includes/functions/extra_functions/selectable_countries_functions.php</li>
+<li>/includes/languages/english/extra_definitions/YOUR_TEMPLATE/selectable_countries.php</li>
+<li class="corefile">/YOUR_ADMIN/countries.php</li>
+<li class="corefile">/YOUR_ADMIN/includes/languages/english/countries.php</li>
+</ol></li>
+</ol>
+<h2>Un-install</h2>
+<p>Run the <strong>uninstall_selectable_countries.sql</strong> to remove the database entries, then replace the files you previously copied with their initial contents.</p>
+
+<h2 id="v152">Upgrading to Zen Cart v1.5.2 or later</h2>
+<p>The function provided by <em>Selectable Countries</em> is included in Zen Cart v1.5.2 and later.  If you have installed <em>Selectable Countries</em> on your Zen Cart v1.5.0 or v1.5.1 store and are preparing to upgrade, this section identifies that process.  The following table identifies what action to perform on each of this plugin's files during your upgrade:</p>
+<table>
+  <tr>
+    <th>File Name</th>
+    <th>Upgrade Action</th>
+  </tr>
+  <tr>
+    <td>/includes/auto_loaders/config.country_check.php</td>
+    <td>Delete</td>
+  </tr>
+  <tr>
+    <td>/includes/init_includes/init_country_check.php</td>
+    <td>Delete</td>
+  </tr>
+  <tr>
+    <td class="corefile">/includes/functions/functions_lookups.php</td>
+    <td>Use Zen Cart distribution version</td>
+  </tr>
+  <tr>
+    <td>/includes/functions/extra_functions/selectable_countries_functions.php</td>
+    <td>Delete</td>
+  </tr>
+  <tr>
+    <td>/includes/languages/english/extra_definitions/YOUR_TEMPLATE/selectable_countries.php</td>
+    <td>Delete</td>
+  </tr>
+  <tr>
+    <td class="corefile">/YOUR_ADMIN/countries.php</td>
+    <td>Use Zen Cart distribution version</td>
+  </tr>
+  <tr>
+    <td class="corefile">/YOUR_ADMIN/includes/languages/english/countries.php</td>
+    <td>Use Zen Cart distribution version</td>
+  </tr>
+</table>
+<p><em>Once the file-related portion of your upgrade is completed</em>, run the SQL patch present in <code class="nopad">/sc_upgrade_to_zc152.sql</code>.  This file changes the name of the <code class="nopad">countries_active</code> field to its Zen Cart v1.5.2+ field name (<code class="nopad">status</code>).</p>
+</body>
+</html>
